@@ -15,6 +15,7 @@
       }
 
       h2 {
+        margin: 0;
         padding: 8px 24px;
       }
 
@@ -57,13 +58,13 @@
       <iron-list items="[[fonts]]" as="item" selection-enabled="true" >
         <template>
           <div>
-            [[selected]]
             <yo-paper-gfont-button 
               id="pgfb[[index]]" 
+              selectable="true"
               example$="[[example]]" 
               value$="[[item.family]]" 
               selected="[[selected]]" 
-              on-click="selectHandler">
+              on-tap="selectHandler">
             </yo-paper-gfont-button>
           </div>
         </template>

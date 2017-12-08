@@ -46,6 +46,13 @@
         display: none;
       }
 
+      iron-icon {
+        fill: var(--yo-paper-gfont-icon-color, var(--primary-color));
+        margin-right: 1.2em;
+        --iron-icon-height: 2em;
+        --iron-icon-width: 2em;
+      }
+
       paper-spinner {
         margin-left: 20px;
       }
@@ -58,8 +65,14 @@
       paper-button:not([disabled]) .label {
         color: var(--yo-paper-gfont-label-color, var(--primary-color));
       }
+      :host([selectable]) paper-button {
+        padding-left: 0; 
+      }
     </style>
     <paper-button disabled$="[[disabled]]">
+      <template is="dom-if" if="{{selectable}}">
+        <iron-icon icon$="[[icon]]"></iron-icon>
+      </template>
       <div class="content">
         <div class="label">{{label}}</div>
         <div class="header">{{value}}</div>
@@ -76,11 +89,19 @@
       static get properties() {
         return {
           /**
+          * selectable: boolean to selectable 
+          */
+          selectable: {
+            type: Boolean,
+            value: false
+          },
+          /**
           * selected: boolean to select 
           */
           selected: {
             type: Boolean,
             value: false,
+            observer: "_selectedChanged",
           },
           /**
           * autoload: boolean to load a font
@@ -135,6 +156,9 @@
           }
         };
       }
+      _selectedChanged() {
+        this._setIcon();
+      }
       /**
       * _colorUpdate: updates styles to match value
       */
@@ -157,8 +181,12 @@
         if (this.autoload)
           this.loadFont();
       }
+      _setIcon() {
+        if (this.selectable)
+          this.icon = this.selected ? 'check-circle' : 'radio-button-unchecked';
+      }
       loadFont() {
-        if(!this.value) return;
+        if (!this.value) return;
         if (this.loaded) return;
         this.loading = true;
         WebFont.load({
@@ -167,9 +195,10 @@
             text: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!'
           },
           classes: false,
-          fontactive : (fontName) => {
+          fontactive: (fontName) => {
             this.loaded = true;
             this.loading = false;
+            this._setIcon();
           }
         });
       }
