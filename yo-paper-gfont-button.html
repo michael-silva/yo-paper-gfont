@@ -1,0 +1,183 @@
+<script src="../webfontloader/webfontloader.js"></script>
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-styles/default-theme.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-spinner/paper-spinner.html">
+
+<dom-module id="yo-paper-gfont-button">
+  <template>
+    <style>
+      :host {
+        display: inline-block;
+        font-size: 16px;
+        font-family: var(--yo-paper-gfont-family, inherit);
+      }
+
+      .label {
+        @apply --paper-input-container-label-floating;
+      }
+
+      .header {
+        font-size: 2em;
+        line-height: 1em;
+        font-family: var(--yo-paper-gfont-family, inherit);
+      }
+
+      .header+.header {
+        display: none;
+        color: var(--yo-paper-gfont-placeholder-color, var(--paper-grey-600));
+      }
+
+      .header:empty+.header {
+        display: block;
+      }
+
+      .example {
+        font-size: 1.2em;
+        line-height: 1.3em;
+        color: var(--paper-grey-600);
+        margin: 0;
+        letter-spacing: 2px;
+        font-family: var(--yo-paper-gfont-family, inherit);
+      }
+
+      .example:empty {
+        display: none;
+      }
+
+      paper-spinner {
+        margin-left: 20px;
+      }
+
+      paper-button {
+        border-radius: 0;
+        text-transform: none;
+      }
+
+      paper-button:not([disabled]) .label {
+        color: var(--yo-paper-gfont-label-color, var(--primary-color));
+      }
+    </style>
+    <paper-button disabled$="[[disabled]]">
+      <div class="content">
+        <div class="label">{{label}}</div>
+        <div class="header">{{value}}</div>
+        <div class="header">{{placeholder}}</div>
+        <div class="example">{{example}}</div>
+      </div>
+      <paper-spinner active$="[[loading]]"></paper-spinner>
+    </paper-button>
+  </template>
+
+  <script>
+    class YoPaperGFontButton extends Polymer.Element {
+      static get is() { return 'yo-paper-gfont-button'; }
+      static get properties() {
+        return {
+          /**
+          * selected: boolean to select 
+          */
+          selected: {
+            type: Boolean,
+            value: false,
+          },
+          /**
+          * autoload: boolean to load a font
+          */
+          autoload: {
+            type: Boolean,
+            value: false,
+            observer: "_autoloadChanged",
+          },
+          /**
+          * label: string to store hex color value
+          */
+          label: {
+            type: String
+          },
+          /**
+          * placeholder: string to store hex color value
+          */
+          placeholder: {
+            type: String,
+            value: 'select a font'
+          },
+          /**
+          * label: string to store hex color value
+          */
+          example: {
+            type: String,
+            value: ''
+          },
+          /**
+          * disabled: boolean input diabled
+          */
+          disabled: {
+            type: Boolean,
+            value: false
+          },
+          /**
+          * readonly: boolena input read only
+          */
+          readonly: {
+            type: Boolean,
+            value: false
+          },
+          /**
+          * value: string to value of input
+          */
+          value: {
+            type: String,
+            notify: true,
+            observer: "_fontUpdate",
+            value: ''
+          }
+        };
+      }
+      /**
+      * _colorUpdate: updates styles to match value
+      */
+      _fontUpdate() {
+        if (this.value) {
+          this.updateStyles({
+            '--yo-paper-gfont-family': this.value
+          });
+        }
+        else {
+          this.updateStyles({
+            '--yo-paper-gfont-family': ''
+          });
+        }
+
+        if (this.autoload)
+          this.loadFont();
+      }
+      _autoloadChanged() {
+        if (this.autoload)
+          this.loadFont();
+      }
+      loadFont() {
+        if(!this.value) return;
+        if (this.loaded) return;
+        this.loading = true;
+        WebFont.load({
+          google: {
+            families: [this.value],
+            text: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!'
+          },
+          classes: false,
+          fontactive : (fontName) => {
+            this.loaded = true;
+            this.loading = false;
+          }
+        });
+      }
+      ready() {
+        super.ready();
+      }
+    }
+
+    window.customElements.define(YoPaperGFontButton.is, YoPaperGFontButton);
+  </script>
+</dom-module>

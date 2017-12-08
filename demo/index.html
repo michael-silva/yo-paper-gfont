@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>yo-paper-gfont demo</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+
+    <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+    <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+    <link rel="import" href="../yo-paper-gfont.html">
+
+    <custom-style>
+      <style is="custom-style" include="demo-pages-shared-styles"></style>
+    </custom-style>
+  </head>
+  <body>
+    <div class="vertical-section-container centered">
+      <h3>yo-paper-gfont demos</h3>
+      <demo-snippet><b>Label set:</b>
+        <template>
+          <yo-paper-gfont google-key="AIzaSyAGvayJHzu-_pbJhTMCO9Fgbz3xjr2qM_g" label="Font label"></yo-paper-gfont>
+        </template>
+      </demo-snippet>
+      <demo-snippet><b>Example set:</b>
+        <template>
+          <yo-paper-gfont google-key="AIzaSyAGvayJHzu-_pbJhTMCO9Fgbz3xjr2qM_g" label="Font label" example="abcdefghijklmnopqrstuvwxyz!"></yo-paper-gfont>
+        </template>
+      </demo-snippet>
+      <demo-snippet><b>Placeholder set:</b>
+        <template>
+          <yo-paper-gfont google-key="AIzaSyAGvayJHzu-_pbJhTMCO9Fgbz3xjr2qM_g" label="Font label" example="abcdefghijklmnopqrstuvwxyz!" placeholder="Custom placeholder"></yo-paper-gfont>
+        </template>
+      </demo-snippet>
+      <demo-snippet><b>Value set:</b>
+        <template>
+          <yo-paper-gfont google-key="AIzaSyAGvayJHzu-_pbJhTMCO9Fgbz3xjr2qM_g" label="Font label" value="Dancing Script" example="abcdefghijklmnopqrstuvwxyz!"></yo-paper-gfont>
+        </template>
+      </demo-snippet>
+      <demo-snippet><b>Disabled setup:</b>
+        <template>
+          <yo-paper-gfont google-key="AIzaSyAGvayJHzu-_pbJhTMCO9Fgbz3xjr2qM_g" disabled label="Font label" value="Open Sans" example="abcdefghijklmnopqrstuvwxyz!"></yo-paper-gfont>
+        </template>
+      </demo-snippet>
+      <!--<demo-snippet><b>Readonly setup:</b>
+        <template>
+          <yo-paper-gfont readonly value="#db1fa0"></yo-paper-gfont>
+        </template>
+      </demo-snippet>
+      <demo-snippet><b>Hide advance options:</b>
+        <template>
+          <yo-paper-gfont hide-advanced></yo-paper-gfont>
+        </template>
+      </demo-snippet>-->
+    </div>
+  </body>
+</html>

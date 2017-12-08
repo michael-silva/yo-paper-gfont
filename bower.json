@@ -1,0 +1,35 @@
+{
+  "name": "yo-paper-gfont",
+  "version": "1.0.0",
+  "description": "Dialogue box in a paper style for selecting colors",
+  "main": "yo-paper-gfont.html",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^2.0.0",
+    "paper-behaviors": "PolymerElements/paper-behaviors#^2.0.0",
+    "paper-styles": "PolymerElements/paper-styles#^2.0.0",
+    "iron-icons": "PolymerElements/iron-icons#^2.0.0",
+    "paper-button": "PolymerElements/paper-button#^2.0.0",
+    "paper-dialog": "PolymerElements/paper-dialog#^2.0.0",
+    "paper-card": "PolymerElements/paper-card#^2.0.0",
+    "webfontloader": "^1.6.28",
+    "iron-ajax": "^2.0.6",
+    "iron-list": "^2.0.12",
+    "paper-spinner": "^2.0.0"
+  },
+  "devDependencies": {
+    "iron-demo-helpers": "PolymerElements/iron-demo-helpers#^2.0.0",
+    "web-component-tester": "Polymer/web-component-tester#^6.0.0",
+    "webcomponentsjs": "webcomponents/webcomponentsjs#^1.0.0"
+  },
+  "resolutions": {
+    "polymer": "^2.0.0"
+  }
+}

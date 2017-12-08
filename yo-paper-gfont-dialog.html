@@ -1,0 +1,226 @@
+<script src="../webfontloader/webfontloader.js"></script>
+<link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../paper-dialog/paper-dialog.html">
+<link rel="import" href="../paper-spinner/paper-spinner.html">
+<link rel="import" href="../iron-list/iron-list.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="yo-paper-gfont-button.html">
+
+<dom-module id="yo-paper-gfont-dialog">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      h2 {
+        padding: 8px 24px;
+      }
+
+      .buttons {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+
+      paper-spinner {
+        text-align: center;
+      }
+
+      paper-dialog {
+        width: var(--yo-paper-gfont-dialog-width, 512px);
+        height: 90%;
+        min-height: var(--yo-paper-gfont-dialog-min-height, 256px);
+        max-height: var(--yo-paper-gfont-dialog-max-height, 512px);
+        padding: 0;
+        background-color: var(--yo-paper-gfont-dialog-background, var(--light-theme-background-color));
+      }
+
+      iron-list {
+        position: absolute;
+        top: 10%;
+        bottom: 55px;
+        right: 0;
+        left: 0;
+      }
+
+      yo-paper-gfont-button {
+        width: 100%;
+        display: block;
+      }
+    </style>
+    <paper-dialog modal>
+      <h2>{{label}}</h2>
+      <iron-ajax url$="[[url]]" on-response="handleResponse" handle-as="json" auto></iron-ajax>
+      <iron-list items="[[fonts]]" as="item" selection-enabled="true" >
+        <template>
+          <div>
+            [[selected]]
+            <yo-paper-gfont-button 
+              id="pgfb[[index]]" 
+              example$="[[example]]" 
+              value$="[[item.family]]" 
+              selected="[[selected]]" 
+              on-click="selectHandler">
+            </yo-paper-gfont-button>
+          </div>
+        </template>
+      </iron-list>
+      <paper-spinner active$="[[loading]]"></paper-spinner>
+      <div class="buttons">
+        <paper-button dialog-dismiss on-tap='_dialogClosed'>Cancel</paper-button>
+        <paper-button dialog-confirm on-tap='_dialogConfirm'>Ok</paper-button>
+      </div>
+    </paper-dialog>
+
+  </template>
+
+  <script>
+    class YoPaperGFontDialog extends Polymer.Element {
+      /**
+      * Fired when the dialog box is closed.
+      *
+      * @event paper-color-dialog-closed
+      */
+      static get is() { return 'yo-paper-gfont-dialog'; }
+      static get properties() {
+        return {
+          /**
+          * label: string to title
+          */
+          label: {
+            type: String
+          },
+          /**
+          * label: string to example of font
+          */
+          example: {
+            type: String
+          },
+          /**
+          * selected: string to font-family selected
+          */
+          selected: {
+            type: String
+          },
+          /**
+          * googleKey: key for google api
+          */
+          googleKey: {
+            type: String
+          },
+          /**
+          * fonts: array to store list of fonts
+          */
+          fonts: {
+            type: Array,
+            notify: true,
+            value: []
+          }
+        };
+      }
+      /**
+      * _setSelection: method to choose between basic and advanced sections on open
+      */
+      _setSelection() {
+        const i = this.fonts.findIndex(x => x.family === this.selected);
+        if (i >= 0) {
+          this.list.selectIndex(i);
+          this.list.scrollToIndex(i);
+        }
+      }
+      /**
+      * _dialogConfirm: fires an event on dialog close, detail is true or false depending on whether the close was a confirm or not
+      */
+      _dialogConfirm(e) {
+        this.dispatchEvent(new CustomEvent('paper-gfont-dialog-closed', { bubbles: true, composed: true, 'detail': true }));
+      }
+      /**
+      * _dialogClosed: fires an event on dialog close, detail is true or false depending on whether the close was a confirm or not
+      */
+      _dialogClosed(e) {
+        this.dispatchEvent(new CustomEvent('paper-gfont-dialog-closed', { bubbles: true, composed: true, 'detail': false }));
+      }
+      _getFontsToLoad() {
+        const toload = [];
+
+        for (let i = this.list.firstVisibleIndex; i < this.list.lastVisibleIndex; i++) {
+          if (this.fonts[i].loaded) continue;
+          this.fonts[i].loaded = true;
+          const item = this.list.querySelector('#pgfb' + i);
+          item.loading = true;
+          item.classList.add('loading');
+          toload.push(this.fonts[i].family)
+        }
+
+        return toload;
+      }
+      _loadFonts(fonts) {
+        if (fonts.length === 0) return;
+        this.waiting = true;
+        const finishLoad = () => {
+          this.root.querySelectorAll('iron-list .loading').forEach(item => {
+            item.loading = false;
+            item.classList.remove('loading');
+          });
+          this.waiting = false;
+        };
+
+        WebFont.load({
+          google: {
+            families: fonts,
+            text: 'ABCDEFGHIJKLMNOÇPQRSTUVWXYZçabcdefghijklmnopqrstuvwxyz!'
+          },
+          classes: false,
+          active: finishLoad,
+          inactive: finishLoad
+        });
+      }
+      /**
+      * _isVisible: method tocheckl if a index is visible 
+      */
+      _scrollHandler() {
+        if (this.waiting) return;
+
+        clearTimeout(this.isScrolling);
+        this.isScrolling = setTimeout(() => {
+          const toload = this._getFontsToLoad();
+          this._loadFonts(toload);
+        }, 100)
+      }
+
+      selectHandler(e) {
+        this.selected = e.model.item.family;
+        this.list.selectIndex(e.model.index);
+      }
+
+      ready() {
+        super.ready();
+        this.list = this.root.querySelector('iron-list');
+        this.root.querySelector('paper-dialog').addEventListener('iron-overlay-opened', this._setSelection.bind(this));
+      }
+      handleResponse(e) {
+        this.fonts = e.detail.response.items;
+        this.loading = false;
+
+        this._setSelection();
+        this.list.addEventListener('scroll', this._scrollHandler.bind(this), false);
+      }
+      /**
+      * open: method to open the dialog
+      */
+      open() {
+        if (this.fonts.length == 0) {
+          this.loading = true;
+          this.url = `https://www.googleapis.com/webfonts/v1/webfonts?sort=popularity&key=${this.googleKey}`;
+        }
+
+        this.root.querySelector('paper-dialog').open();
+      }
+    }
+
+    window.customElements.define(YoPaperGFontDialog.is, YoPaperGFontDialog);
+  </script>
+</dom-module>
