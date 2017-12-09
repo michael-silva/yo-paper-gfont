@@ -1,14 +1,12 @@
-# l2t-paper-color
-Dialogue box for selecting colors
-
-![gif](https://lh3.googleusercontent.com/-PwDk7mMnViE/WTHg2YVFCZI/AAAAAAAAdw4/V8CDBow09tcJMogh3EYGQsMQrMDLxxtkQCL0B/h296/2017-06-02.gif)
+# yo-paper-gfont
+Dialogue box for selecting fonts from [Google Fonts](https://fonts.google.com/)
 
 ## Install with bower
 
 First you need bower, [see their site](http://bower.io/) for details 
 
 ```
-bower install --save l2t-paper-color
+bower install --save yo-paper-gfont
 ```
 
 ## Examples
@@ -18,14 +16,14 @@ bower install --save l2t-paper-color
 <custom-element-demo>
   <template>
     <script src="../webcomponentsjs/webcomponents-lite.js"></script>
-    <link rel="import" href="l2t-paper-color.html">
+    <link rel="import" href="yo-paper-gfont.html">
 	 <next-code-block></next-code-block>
   </template>
 </custom-element-demo>
 ```
 -->
 ```html
-  <l2t-paper-color></l2t-paper-color>
+  <yo-paper-gfont google-key="AIzaSyAGvayJHzu-_pbJhTMCO9Fgbz3xjr2qM_g" label="Font label"></yo-paper-gfont>
 ```
   
 ## Styling
@@ -34,9 +32,14 @@ The following custom properties are available for styling:
 
 | Custom property | Description | Default |
 |----------------|-------------|-------------|
-| --l2t-paper-color-width | width of input	 | 120px |
-| --l2t-paper-color-indicator-icon | style for color indicator (programmatically set) | transparent |
-| --l2t-paper-color-indicator-icon-display | display style for color indicator (programmatically set) | none |
+| --yo-paper-gfont-placeholder-color | color of placeholder | var(--paper-grey-600) |
+| --yo-paper-gfont-icon-color | color of check icon |  var(--primary-color) |
+| --yo-paper-gfont-label-color | color of button label |  var(--primary-color) |
+| --yo-paper-gfont-dialog-width | set the width of change font dialog | 512px |
+| --yo-paper-gfont-dialog-min-heigh | set the min-height of change font dialog | 256px |
+| --yo-paper-gfont-dialog-max-heigh | set the max-height of change font dialog | 512px |
+| --yo-paper-gfont-dialog-background | set the background color of change font dialog | var(--light-theme-background-color) |
+
 
 ## Attributes
 
@@ -44,14 +47,12 @@ The following custom properties are available for styling:
 
 | Attribute Name | Functionality | Type | Default |
 |----------------|-------------|-------------|-------------|
-| alwaysFloatLabel | always-float-label: boolean label always in float position | boolean  | false |
-| colors | array to store list of colors | Array | false |
-| disabled | boolean input diabled | Number | 5 |
-| hideAdvanced | boolean to hide advance button | boolean | false |
-| label | string to store hex color value | string | "Color select" |
-| noLabelFloat | boolean remove label when value contains text | boolean  | false |
+| googleKey | always-float-label: boolean label always in float position | boolean  | false |
+| placeholder | string to placeholder | string | "Color select" |
+| label | string to describe the selected font | string | "Font select" |
+| disabled | boolean input diabled | boolean | false |
 | readonly | boolean input read only | boolean | false |
-| value | string for value of input | string | "" |
+| value | string for value of selected font | string | "" |
 
 ## Methods
 
@@ -59,6 +60,5 @@ The following custom properties are available for styling:
 
 | Method Name | Action |
 |----------------|-------------|
-| _colorUpdate() | Updates styles to match value |
 | _dialogHandler(e) | If dialog is confirmed update value |
 | _openDialog() | Open dialog if not readonly |
