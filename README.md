@@ -32,6 +32,7 @@ The following custom properties are available for styling:
 
 | Custom property | Description | Default |
 |----------------|-------------|-------------|
+| --yo-paper-gfont-font-size | font size of button | 16px |
 | --yo-paper-gfont-placeholder-color | color of placeholder | var(--paper-grey-600) |
 | --yo-paper-gfont-icon-color | color of check icon |  var(--primary-color) |
 | --yo-paper-gfont-label-color | color of button label |  var(--primary-color) |
