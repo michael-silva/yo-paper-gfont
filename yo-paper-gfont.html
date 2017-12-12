@@ -86,13 +86,13 @@
       _openDialog() {
         if(this.readonly || this.disabled) return;
         this.fontDialog.selected = this.value;
+        this.fontDialog.example = this.example;
+        this.fontDialog.label = this.label;
+        this.fontDialog.googleKey = this.googleKey;
         this.fontDialog.open();
       }
       _createDialog() {
         this.fontDialog = document.createElement('yo-paper-gfont-dialog');
-        this.fontDialog.example = this.example;
-        this.fontDialog.label = this.label;
-        this.fontDialog.googleKey = this.googleKey;
         document.body.appendChild(this.fontDialog);
       }
       ready() {
