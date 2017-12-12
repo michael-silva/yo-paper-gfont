@@ -1,6 +1,6 @@
 {
   "name": "yo-paper-gfont",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Dialogue box in a paper style for selecting fonts",
   "main": "yo-paper-gfont.html",
   "license": "MIT",
